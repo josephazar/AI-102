@@ -1,0 +1,14 @@
+comments.txt
+
+.DS_Store
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+*.egg-info/
+*.egg
+
+venv/
+.venv/
+env/
+.env
