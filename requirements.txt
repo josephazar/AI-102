@@ -1,1 +1,10 @@
 azure-ai-textanalytics
+streamlit
+pandas
+numpy
+plotly
+matplotlib
+requests
+python-dotenv
+wordcloud
+altair
