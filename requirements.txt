@@ -6,5 +6,8 @@ plotly
 matplotlib
 requests
 python-dotenv
+pyvis
 wordcloud
 altair
+azure-ai-language-questionanswering
+networkx

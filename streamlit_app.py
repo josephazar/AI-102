@@ -25,7 +25,7 @@ def main():
     # Service selection
     service = st.sidebar.selectbox(
         "Select a service to explore",
-        ["Home", "Text Analytics", "Speech Services", "Computer Vision", "Form Recognizer", "Language Understanding"]
+        ["Home", "Text Analytics", "Question Answering", "Speech Services", "Computer Vision", "Form Recognizer", "Language Understanding"]
     )
     
     # Display selected service content
@@ -35,6 +35,10 @@ def main():
         # Import and show Text Analytics page
         from text_analytics.text_analytics_app import show_text_analytics
         show_text_analytics()
+    elif service == "Question Answering":
+        # Import and show Question Answering page
+        from text_analytics.question_answering_app import show_question_answering
+        show_question_answering()
     elif service == "Speech Services":
         st.title("Speech Services")
         st.info("Speech Services features coming soon!")
@@ -60,10 +64,12 @@ def show_home():
     ### Available Services:
     
     - **Text Analytics**: Analyze text for sentiment, extract key phrases, detect language, and identify entities
+    - **Question Answering**: Get answers from text documents using natural language questions
     - **Speech Services**: Convert speech to text, text to speech, and perform speech translation
     - **Computer Vision**: Analyze images, detect objects, and extract text from images
     - **Form Recognizer**: Extract information from documents and forms
     - **Language Understanding**: Build natural language understanding into your applications
+    
     
     ### Getting Started
     
