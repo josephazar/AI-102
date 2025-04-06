@@ -25,7 +25,8 @@ def main():
     # Service selection
     service = st.sidebar.selectbox(
         "Select a service to explore",
-        ["Home", "Text Analytics", "Question Answering", "Conversational Language Understanding", "Computer Vision", "Form Recognizer", "Speech Services"]
+        ["Home", "Text Analytics", "Question Answering", "Conversational Language Understanding", 
+         "Computer Vision", "Florence-2 Vision", "Form Recognizer", "Speech Services"]
     )
     
     # Display selected service content
@@ -47,6 +48,10 @@ def main():
         # Import and show Computer Vision page
         from computer_vision.cv_app import show_computer_vision
         show_computer_vision()
+    elif service == "Florence-2 Vision":
+        # Import and show Florence-2 page
+        from florence.florence_app import show_florence
+        show_florence()
     elif service == "Form Recognizer":
         st.title("Form Recognizer")
         st.info("Form Recognizer features coming soon!")
@@ -70,6 +75,7 @@ def show_home():
     - **Conversational Language Understanding**: Build intelligent bots that understand user intents and extract entities
     - **Speech Services**: Convert speech to text, text to speech, and perform speech translation
     - **Computer Vision**: Analyze images, detect objects, and extract text from images
+    - **Florence-2 Vision**: Explore Microsoft's advanced multi-task vision model with prompt-based interface
     - **Form Recognizer**: Extract information from documents and forms
     
     
