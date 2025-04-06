@@ -25,7 +25,7 @@ def main():
     # Service selection
     service = st.sidebar.selectbox(
         "Select a service to explore",
-        ["Home", "Text Analytics", "Question Answering", "Speech Services", "Computer Vision", "Form Recognizer", "Language Understanding"]
+        ["Home", "Text Analytics", "Question Answering", "Conversational Language Understanding", "Computer Vision", "Form Recognizer", "Speech Services"]
     )
     
     # Display selected service content
@@ -39,18 +39,20 @@ def main():
         # Import and show Question Answering page
         from text_analytics.question_answering_app import show_question_answering
         show_question_answering()
-    elif service == "Speech Services":
-        st.title("Speech Services")
-        st.info("Speech Services features coming soon!")
+    elif service == "Conversational Language Understanding":
+        # Import and show NLU page
+        from NLU.nlu_app import show_nlu
+        show_nlu()
     elif service == "Computer Vision":
-        st.title("Computer Vision")
-        st.info("Computer Vision features coming soon!")
+        # Import and show Computer Vision page
+        from computer_vision.cv_app import show_computer_vision
+        show_computer_vision()
     elif service == "Form Recognizer":
         st.title("Form Recognizer")
         st.info("Form Recognizer features coming soon!")
-    elif service == "Language Understanding":
-        st.title("Language Understanding")
-        st.info("Language Understanding features coming soon!")
+    elif service == "Speech Services":
+        st.title("Speech Services")
+        st.info("Speech Services features coming soon!")
 
 def show_home():
     st.title("Azure AI Services Explorer")
@@ -65,10 +67,10 @@ def show_home():
     
     - **Text Analytics**: Analyze text for sentiment, extract key phrases, detect language, and identify entities
     - **Question Answering**: Get answers from text documents using natural language questions
+    - **Conversational Language Understanding**: Build intelligent bots that understand user intents and extract entities
     - **Speech Services**: Convert speech to text, text to speech, and perform speech translation
     - **Computer Vision**: Analyze images, detect objects, and extract text from images
     - **Form Recognizer**: Extract information from documents and forms
-    - **Language Understanding**: Build natural language understanding into your applications
     
     
     ### Getting Started
@@ -90,7 +92,8 @@ def show_home():
     with col2:
         st.markdown("### 💡 Learn")
         st.markdown("Understand how these services can be applied to real-world scenarios")
-    
- 
+        
+
+
 if __name__ == "__main__":
     main()

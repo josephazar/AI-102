@@ -10,4 +10,7 @@ pyvis
 wordcloud
 altair
 azure-ai-language-questionanswering
+azure-ai-language-conversations
 networkx
+tqdm
+azure-ai-vision-imageanalysis
