@@ -1,75 +1,112 @@
-import yaml
-from azure.ai.formrecognizer import FormRecognizerClient
-from azure.core.credentials import AzureKeyCredential
+"""
+ID Document Analysis with Azure Document Intelligence
+"""
 
-# get the information about the connection
-with open("../account_configs.yml", "r") as f:
-    data = yaml.load(f, yaml.FullLoader)
-    subscription_key = data["fr_subscription_key"]
-    endpoint = data["fr_endpoint"]
+import os
+from .client import get_document_intelligence_client
 
-# pre-trained client connection
-form_recognizer_client = FormRecognizerClient(
-    endpoint, AzureKeyCredential(subscription_key)
-)
-
-
-formUrl = (
-    "https://raw.githubusercontent.com/Azure-Samples/cognitive-services-REST-api-samples/"
-    "master/curl/form-recognizer/DriverLicense.png"
-)
-
-poller = form_recognizer_client.begin_recognize_identity_documents_from_url(formUrl)
-id_documents = poller.result()
-
-for idx, id_document in enumerate(id_documents):
-    print("--------Recognizing ID document #{}--------".format(idx + 1))
-    first_name = id_document.fields.get("FirstName")
-    if first_name:
-        print(
-            "First Name: {} has confidence: {}".format(
-                first_name.value, first_name.confidence
+def analyze_id_document(image_path=None, image_url=None):
+    """
+    Analyze an identity document (driver's license, passport, etc.) using Document Intelligence
+    
+    Args:
+        image_path (str, optional): Path to a local ID document image
+        image_url (str, optional): URL of an ID document image
+        
+    Returns:
+        dict: Structured data extracted from the identity document
+    """
+    client = get_document_intelligence_client()
+    if not client:
+        return None
+    
+    try:
+        # Process the ID document
+        if image_path and os.path.isfile(image_path):
+            with open(image_path, "rb") as image:
+                poller = client.begin_analyze_document("prebuilt-idDocument", image)
+        elif image_url:
+            poller = client.begin_analyze_document_from_url(
+                "prebuilt-idDocument", 
+                image_url
             )
-        )
-    last_name = id_document.fields.get("LastName")
-    if last_name:
-        print(
-            "Last Name: {} has confidence: {}".format(
-                last_name.value, last_name.confidence
-            )
-        )
-    document_number = id_document.fields.get("DocumentNumber")
-    if document_number:
-        print(
-            "Document Number: {} has confidence: {}".format(
-                document_number.value, document_number.confidence
-            )
-        )
-    dob = id_document.fields.get("DateOfBirth")
-    if dob:
-        print("Date of Birth: {} has confidence: {}".format(dob.value, dob.confidence))
-    doe = id_document.fields.get("DateOfExpiration")
-    if doe:
-        print(
-            "Date of Expiration: {} has confidence: {}".format(
-                doe.value, doe.confidence
-            )
-        )
-    sex = id_document.fields.get("Sex")
-    if sex:
-        print("Sex: {} has confidence: {}".format(sex.value, sex.confidence))
-    address = id_document.fields.get("Address")
-    if address:
-        print(
-            "Address: {} has confidence: {}".format(address.value, address.confidence)
-        )
-    country_region = id_document.fields.get("CountryRegion")
-    if country_region:
-        print(
-            "Country/Region: {} has confidence: {}".format(
-                country_region.value, country_region.confidence
-            )
-        )
-    region = id_document.fields.get("Region")
-    if region:
-        print("Region: {} has confidence: {}".format(region.value, region.confidence))
+        else:
+            return {"error": "No valid image path or URL provided"}
+        
+        result = poller.result()
+        
+        if not result.documents or len(result.documents) == 0:
+            return {"error": "No ID document found in the image"}
+        
+        # Extract ID document data
+        extracted_data = []
+        
+        for doc_idx, document in enumerate(result.documents):
+            doc_data = {
+                "document_index": doc_idx + 1,
+                "document_type": document.doc_type if hasattr(document, "doc_type") else "Unknown",
+                "confidence": document.confidence,
+                "fields": {}
+            }
+            
+            # Map of field names to more readable labels
+            field_labels = {
+                "FirstName": "first_name",
+                "LastName": "last_name",
+                "DocumentNumber": "document_number",
+                "DateOfBirth": "date_of_birth",
+                "DateOfExpiration": "expiration_date",
+                "DateOfIssue": "issue_date",
+                "DocumentType": "document_type",
+                "Sex": "gender",
+                "Address": "address",
+                "CountryRegion": "country",
+                "Region": "state_or_province",
+                "MachineReadableZone": "mrz"
+            }
+            
+            # Extract fields from ID document
+            for field_name, field in document.fields.items():
+                if field_name in field_labels:
+                    # Extract field value safely, handling different field types
+                    field_value = None
+                    
+                    # Handle different field content types
+                    if hasattr(field, "content"):
+                        field_value = field.content
+                    elif hasattr(field, "value"):
+                        field_value = field.value
+                    
+                    # Only add if we found a value
+                    if field_value is not None:
+                        doc_data["fields"][field_labels[field_name]] = {
+                            "value": field_value,
+                            "confidence": field.confidence if hasattr(field, "confidence") else 0.0
+                        }
+            
+            extracted_data.append(doc_data)
+        
+        return {"documents": extracted_data}
+    
+    except Exception as e:
+        return {"error": str(e)}
+
+
+if __name__ == "__main__":
+    # Sample ID document URL
+    sample_url = "https://raw.githubusercontent.com/Azure-Samples/cognitive-services-REST-api-samples/master/curl/form-recognizer/DriverLicense.png"
+    
+    # Analyze from URL
+    result = analyze_id_document(image_url=sample_url)
+    
+    if "error" in result:
+        print(f"Error: {result['error']}")
+    else:
+        for doc in result["documents"]:
+            print(f"\n----- ID Document #{doc['document_index']} -----")
+            print(f"Document Type: {doc['document_type']}")
+            print(f"Confidence: {doc['confidence']:.4f}")
+            
+            print("\nExtracted Fields:")
+            for field_name, field_data in doc["fields"].items():
+                print(f"  - {field_name.replace('_', ' ').title()}: {field_data['value']} (Confidence: {field_data['confidence']:.4f})")

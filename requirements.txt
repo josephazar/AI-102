@@ -19,3 +19,8 @@ transformers>=4.26.0
 einops
 pillow
 timm
+azure-ai-documentintelligence
+pdf2image
+Pillow
+uuid
+python-dateutil
