@@ -60,6 +60,7 @@ def main():
         st.title("Speech Services")
         st.info("Speech Services features coming soon!")
 
+
 def show_home():
     st.title("Azure AI Services Explorer")
     st.subheader("Your interactive guide to Azure AI capabilities")
