@@ -23,4 +23,7 @@ azure-ai-documentintelligence
 pdf2image
 Pillow
 uuid
+azure-identity
+azure-search-documents
+openai
 python-dateutil

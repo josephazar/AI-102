@@ -26,7 +26,7 @@ def main():
     service = st.sidebar.selectbox(
         "Select a service to explore",
         ["Home", "Text Analytics", "Question Answering", "Conversational Language Understanding", 
-         "Computer Vision", "Florence-2 Vision", "Document Intelligence"]
+         "Computer Vision", "Florence-2 Vision", "Document Intelligence", "AI Search"]
     )
     
     # Display selected service content
@@ -56,6 +56,10 @@ def main():
         # Import and show Document Intelligence page
         from documents_intelligence.doc_intelligence_app import show_document_intelligence
         show_document_intelligence()
+    elif service == "AI Search":
+        # Import and show AI Search page
+        from ai_search.ai_search_app import show_ai_search
+        show_ai_search()
     elif service == "Speech Services":
         st.title("Speech Services")
         st.info("Speech Services features coming soon!")
@@ -75,7 +79,7 @@ def show_home():
     - **Text Analytics**: Analyze text for sentiment, extract key phrases, detect language, and identify entities
     - **Question Answering**: Get answers from text documents using natural language questions
     - **Conversational Language Understanding**: Build intelligent bots that understand user intents and extract entities
-    - **Speech Services**: Convert speech to text, text to speech, and perform speech translation
+    - **AI Search**: Create powerful search experiences with vector search, semantic ranking, and relevance tuning
     - **Computer Vision**: Analyze images, detect objects, and extract text from images
     - **Florence-2 Vision**: Explore Microsoft's advanced multi-task vision model with prompt-based interface
     - **Document Intelligence**: Extract information from documents and forms
