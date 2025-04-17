@@ -1,0 +1,30 @@
+{
+    "description": "Generating content understanding from video for Real Estate.",
+    "scenario": "videoShot",
+    "config": {
+        "returnDetails": true,
+        "locales": [
+            "en-US",
+            "es-ES",
+            "es-MX",
+            "fr-FR",
+            "hi-IN",
+            "it-IT",
+            "ja-JP",
+            "ko-KR",
+            "pt-BR",
+            "zh-CN"
+        ],
+        "enableFace": false
+    },
+    "fieldSchema": {
+        "name": "Content Understanding for Real Estate",
+        "descriptions": "Generate content understanding from this video.",
+        "fields": {
+            "sceneDescription": {
+                "type": "string",
+                "description": "Describe the scene in detail, including any objects, people, or settings visible."
+            }
+        }
+    }
+}

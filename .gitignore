@@ -12,3 +12,6 @@ venv/
 .venv/
 env/
 .env
+
+.idea/
+content_understanding/frames
