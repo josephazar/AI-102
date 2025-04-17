@@ -17,6 +17,8 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+
+
 def main():
     # Sidebar with service selection
     st.sidebar.title("Azure AI Services")
@@ -26,9 +28,11 @@ def main():
     service = st.sidebar.selectbox(
         "Select a service to explore",
         ["Home", "Text Analytics", "Question Answering", "Conversational Language Understanding", 
-         "Computer Vision", "Florence-2 Vision", "Document Intelligence", "AI Search", "Content Understanding"]
+         "Computer Vision", "Florence-2 Vision", "Document Intelligence", "AI Search", "Content Understanding", "AI Agents", "Speech Services"]
     )
     
+
+
     
     # Display selected service content
     if service == "Home":
@@ -65,15 +69,21 @@ def main():
         # Import and show Content Understanding page
         from content_understanding.content_understanding_app import show_content_understanding
         show_content_understanding()
+    elif service == "AI Agents":
+        # Import and show AI Agents page
+        from ai_azure_agents.ai_agents_app import show_ai_agents
+        show_ai_agents()
     elif service == "Speech Services":
-        st.title("Speech Services")
-        st.info("Speech Services features coming soon!")
-
+        # Import and show Speech Services page
+        from speech.speech_app import show_speech_services
+        show_speech_services()
 
 def show_home():
     st.title("Azure AI Services Explorer")
     st.subheader("Your interactive guide to Azure AI capabilities")
     
+    # add image foundry-stack-wp.png below title
+    st.image("foundry-stack-wp.png", width=1000)
     st.markdown("""
     Welcome to the Azure AI Services Explorer! This application demonstrates the power and versatility 
     of Azure's AI and Cognitive Services. Use the sidebar to navigate between different services and explore 
@@ -89,7 +99,8 @@ def show_home():
     - **Florence-2 Vision**: Explore Microsoft's advanced multi-task vision model with prompt-based interface
     - **Document Intelligence**: Extract information from documents and forms
     - **Content Understanding**: Analyze videos and generate insights, listings, and searchable content
-    
+    - **AI Agents**: Build intelligent conversational agents with multi-agent orchestration capabilities
+    - **Speech Services**: Convert speech to text, text to speech, and translate spoken language in real-time
     
     ### Getting Started
     

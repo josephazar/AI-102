@@ -23,11 +23,9 @@ azure-ai-documentintelligence
 pdf2image
 Pillow
 uuid
-azure-identity
 azure-search-documents
 python-dateutil
 azure-core
-azure-identity
 azure-ai-contentsafety 
 azure-ai-evaluation
 azure-common
@@ -36,6 +34,7 @@ azure-ai-translation-document
 azure-ai-translation-text
 azure-ai-ml
 azure-ai-projects
+azure-identity
 azure-cognitiveservices-speech
 azure-search-documents
 openai
@@ -48,3 +47,5 @@ pillow
 langchain-community
 opencv-python
 opencv-python-headless
+openai-agents
+pydantic
